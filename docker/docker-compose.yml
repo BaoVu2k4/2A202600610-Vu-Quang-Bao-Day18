@@ -65,9 +65,10 @@ services:
           jupytext==1.16.4 \
           faker==30.3.0
         echo ">> Auto-converting .py percent files to .ipynb (one-time per file)…"
-        cd /workspace/notebooks && for f in *.py; do
-          ipynb="${f%.py}.ipynb"
-          [ -f "$ipynb" ] || jupytext --to notebook "$f"
+        export PATH="$$HOME/.local/bin:$$PATH"
+        cd /workspace/notebooks-spark && for f in *.py; do
+          ipynb="$${f%.py}.ipynb"
+          [ -f "$$ipynb" ] || python -m jupytext --to notebook "$$f" || true
         done
         echo ">> Starting Jupyter (token: lakehouse)…"
         cd /workspace
